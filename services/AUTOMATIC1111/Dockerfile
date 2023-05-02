@@ -16,6 +16,7 @@ RUN . /clone.sh k-diffusion https://github.com/crowsonkb/k-diffusion.git 5b3af03
 RUN . /clone.sh clip-interrogator https://github.com/pharmapsychotic/clip-interrogator 2486589f24165c8e3b303f84e9dbbea318df83e8
 
 
+
 FROM alpine:3.17 as xformers
 RUN apk add --no-cache aria2
 RUN aria2c -x 5 --dir / --out wheel.whl 'https://github.com/AbdBarho/stable-diffusion-webui-docker/releases/download/5.0.0/xformers-0.0.17.dev449-cp310-cp310-manylinux2014_x86_64.whl'
@@ -68,7 +69,9 @@ RUN --mount=type=cache,target=/root/.cache/pip \
   git reset --hard ${SHA} && \
   pip install -r requirements_versions.txt
 
-RUN --mount=type=cache,target=/root/.cache/pip  pip install -U opencv-python-headless
+#RUN --mount=type=cache,target=/root/.cache/pip  pip install -U opencv-python-headless
+RUN apt-get install python3-opencv -y && apt-get clean
+RUN --mount=type=cache,target=/root/.cache/pip  pip install -U rich
 
 COPY . /docker
 
