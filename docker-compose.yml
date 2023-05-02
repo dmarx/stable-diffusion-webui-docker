@@ -30,7 +30,11 @@ services:
     build: ./services/AUTOMATIC1111
     image: sd-auto:51
     environment:
-      - CLI_ARGS=--allow-code --medvram --xformers --enable-insecure-extension-access --api
+      - CLI_ARGS=--allow-code --xformers --enable-insecure-extension-access --api --opt-channelslast --opt-sub-quad-attention
+
+    #  - CLI_ARGS=--allow-code --xformers --enable-insecure-extension-access --api --use-textbox-seed --opt-channelslast --opt-sub-quad-attention
+    #environment:
+    #  - CLI_ARGS=--allow-code --medvram --xformers --enable-insecure-extension-access --api
 
   auto-cpu:
     <<: *automatic
