@@ -40,5 +40,5 @@ https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15
   out=ControlNet/control_v11f1p_sd15_seg.pth
 https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_softedge.pth
   out=ControlNet/control_v11f1p_sd15_softedge.pth
-https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15_lineart_anime.pth
+https://huggingface.co/lllyasviel/ControlNet-v1-1/resolve/main/control_v11p_sd15s2_lineart_anime.pth
   out=ControlNet/control_v11f1p_sd15_lineart_anime.pth
