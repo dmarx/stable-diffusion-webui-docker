@@ -30,7 +30,9 @@ services:
     build: ./services/AUTOMATIC1111
     image: sd-auto:51
     environment:
-      - CLI_ARGS=--allow-code --xformers --enable-insecure-extension-access --api --opt-channelslast --opt-sub-quad-attention
+      - CLI_ARGS=--allow-code --xformers --enable-insecure-extension-access --api --tls-certfile certificate.crt --tls-keyfile local_tls_private_key.pem
+
+    #  - CLI_ARGS=--allow-code --xformers --enable-insecure-extension-access --api --opt-channelslast --opt-sub-quad-attention
 
     #  - CLI_ARGS=--allow-code --xformers --enable-insecure-extension-access --api --use-textbox-seed --opt-channelslast --opt-sub-quad-attention
     #environment:
