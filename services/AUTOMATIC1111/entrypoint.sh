@@ -1,5 +1,27 @@
 #!/bin/bash
 
+###
+# imports for extensions
+python -m pip install rich numexpr imageio_ffmpeg av moviepy scenedetect openai loguru
+
+# fix import errors
+python -m pip install --upgrade tqdm # this might need to be version specific
+
+python -m pip install librosa segment_anything js2py toml diffusers albumentations
+# scenedetect [temporalkit], segment_anything [sd-webui-segment-anything], js2py [prompt highlight], toml [kohya]
+# kohya sd scripts not properly installed, cause of importerror on "library" module
+# would be better if we could just re-run the install.py scripts for all extensions i think
+
+python -m pip install certipie
+
+# no idea what versions i need... transformers and pytorch-lightning are issues
+#python -m pip install transformers
+#pip install --ignore-installed --upgrade tensorflow-gpu
+
+# TODO: issues with dynamicprompts, clip_interrogator
+
+####
+
 set -Eeuo pipefail
 
 # TODO: move all mkdir -p ?
@@ -8,11 +30,15 @@ mkdir -p /data/config/auto/scripts/
 find "${ROOT}/scripts/" -maxdepth 1 -type l -delete
 cp -vrfTs /data/config/auto/scripts/ "${ROOT}/scripts/"
 
-cp -n /docker/config.json /data/config/auto/config.json
-jq '. * input' /data/config/auto/config.json /docker/config.json | sponge /data/config/auto/config.json
+# Set up config file
+python /docker/config.py /data/config/auto/config.json
 
 if [ ! -f /data/config/auto/ui-config.json ]; then
   echo '{}' >/data/config/auto/ui-config.json
+fi
+
+if [ ! -f /data/config/auto/styles.csv ]; then
+  touch /data/config/auto/styles.csv
 fi
 
 declare -A MOUNTS
@@ -35,13 +61,17 @@ MOUNTS["${ROOT}/models/torch_deepdanbooru"]="/data/Deepdanbooru"
 MOUNTS["${ROOT}/models/BLIP"]="/data/BLIP"
 MOUNTS["${ROOT}/models/midas"]="/data/MiDaS"
 MOUNTS["${ROOT}/models/Lora"]="/data/Lora"
+MOUNTS["${ROOT}/models/LyCORIS"]="/data/LyCORIS"
 MOUNTS["${ROOT}/models/ControlNet"]="/data/ControlNet"
 MOUNTS["${ROOT}/models/openpose"]="/data/openpose"
+MOUNTS["${ROOT}/models/ModelScope"]="/data/ModelScope"
 
 MOUNTS["${ROOT}/embeddings"]="/data/embeddings"
 MOUNTS["${ROOT}/config.json"]="/data/config/auto/config.json"
 MOUNTS["${ROOT}/ui-config.json"]="/data/config/auto/ui-config.json"
+MOUNTS["${ROOT}/styles.csv"]="/data/config/auto/styles.csv"
 MOUNTS["${ROOT}/extensions"]="/data/config/auto/extensions"
+MOUNTS["${ROOT}/config_states"]="/data/config/auto/config_states"
 
 # extra hacks
 MOUNTS["${ROOT}/repositories/CodeFormer/weights/facelib"]="/data/.cache"
